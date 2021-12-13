@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { BlogModule } from './blog/blog.module';
+import { Blog } from './blog/blog.model';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `${process.env}.env`,
+      envFilePath: `${process.env.NODE_ENV}.env`,
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
@@ -15,7 +16,7 @@ import { BlogModule } from './blog/blog.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [],
+      models: [Blog],
     }),
     BlogModule,
   ],
