@@ -7,7 +7,7 @@ interface BlogCreationAttrs {
   summary: string;
 }
 
-@Table({ tableName: 'articles' })
+@Table({ tableName: 'blog' })
 export class Blog extends Model<Blog, BlogCreationAttrs> {
   @Column({
     type: DataType.INTEGER,
@@ -20,7 +20,7 @@ export class Blog extends Model<Blog, BlogCreationAttrs> {
   @Column({
     type: DataType.CHAR,
     unique: true,
-    allowNull: false,
+    allowNull: true, // change to false, after implementation of slugs
   })
   slug: string;
 
@@ -42,11 +42,6 @@ export class Blog extends Model<Blog, BlogCreationAttrs> {
     defaultValue: false,
   })
   published: boolean;
-
-  @Column({
-    type: DataType.DATE,
-  })
-  published_at?: Date;
 
   @Column({
     type: DataType.BLOB({

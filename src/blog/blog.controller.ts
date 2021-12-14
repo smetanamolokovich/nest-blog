@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 
-@Controller('blog')
+@Controller('api/blog')
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
@@ -18,17 +26,17 @@ export class BlogController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.blogService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.blogService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBlogDto: UpdateBlogDto) {
-    return this.blogService.update(+id, updateBlogDto);
+  update(@Param('id') id: number, @Body() updateBlogDto: UpdateBlogDto) {
+    return this.blogService.update(id, updateBlogDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.blogService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.blogService.remove(id);
   }
 }
