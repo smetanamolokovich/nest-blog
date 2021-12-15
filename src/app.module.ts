@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
-import { BlogModule } from './blog/blog.module';
-import { Blog } from './blog/blog.model';
+import { BlogModule } from './modules/blog/blog.module';
+import { Blog } from './modules/blog/blog.model';
+import { UserModule } from './modules/user/user.module';
+import { User } from './modules/user/user.model';
 
 @Module({
   imports: [
@@ -16,9 +18,10 @@ import { Blog } from './blog/blog.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [Blog],
+      models: [Blog, User],
     }),
     BlogModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
