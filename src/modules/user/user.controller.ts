@@ -15,6 +15,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './user.model';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @ApiTags('User')
 @Controller('api/users')
@@ -30,7 +32,8 @@ export class UserController {
 
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, type: [User] })
-  @UseGuards(JwtAuthGuard)
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @Get()
   async findAll() {
     return await this.userService.findAll();
