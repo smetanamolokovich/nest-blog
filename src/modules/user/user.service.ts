@@ -17,6 +17,7 @@ export class UserService {
     const role = await this.roleService.findOne('user');
 
     await user.$set('roles', [role.id]);
+    user.roles = [role];
 
     return user;
   }
@@ -43,5 +44,12 @@ export class UserService {
 
   async remove(id: number) {
     return await this.userRepository.destroy({ where: { id } });
+  }
+
+  async getUsersByEmail(email: string) {
+    return await this.userRepository.findOne({
+      where: { email },
+      include: { all: true },
+    });
   }
 }
