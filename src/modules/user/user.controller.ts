@@ -7,12 +7,14 @@ import {
   Delete,
   NotFoundException,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './user.model';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('User')
 @Controller('api/users')
@@ -28,6 +30,7 @@ export class UserController {
 
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, type: [User] })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     return await this.userService.findAll();
