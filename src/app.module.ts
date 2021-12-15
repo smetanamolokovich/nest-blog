@@ -5,6 +5,9 @@ import { BlogModule } from './modules/blog/blog.module';
 import { Blog } from './modules/blog/blog.model';
 import { UserModule } from './modules/user/user.module';
 import { User } from './modules/user/user.model';
+import { RolesModule } from './modules/roles/roles.module';
+import { Role } from './modules/roles/roles.model';
+import { UserRoles } from './modules/roles/user-roles.model';
 
 @Module({
   imports: [
@@ -18,10 +21,12 @@ import { User } from './modules/user/user.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [Blog, User],
+      models: [Blog, User, Role, UserRoles],
+      autoLoadModels: true,
     }),
     BlogModule,
     UserModule,
+    RolesModule,
   ],
   controllers: [],
   providers: [],
