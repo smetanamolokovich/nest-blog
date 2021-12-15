@@ -5,9 +5,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({ example: 'example@hello.com', description: 'User email' })
   readonly email: string;
 
-  @ApiProperty({ example: '00998877', description: 'User password' })
-  readonly password: string;
-
   @ApiProperty({ example: 'true', description: 'Is use banned' })
   readonly banned: boolean;
 

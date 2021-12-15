@@ -3,10 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   NotFoundException,
+  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,7 +15,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './user.model';
 
 @ApiTags('User')
-@Controller('user')
+@Controller('api/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -47,7 +47,7 @@ export class UserController {
 
   @ApiOperation({ summary: 'Update user by ID' })
   @ApiResponse({ status: 200, type: [User] })
-  @Patch(':id')
+  @Put(':id')
   async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     const [numberOfAffectedRows, updatedUser] = await this.userService.update(
       id,
