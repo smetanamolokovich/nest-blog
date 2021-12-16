@@ -49,7 +49,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @ApiProperty({ example: 'Some reason', description: 'Ban reason' })
   @Column({
-    type: DataType.BOOLEAN,
+    type: DataType.STRING,
     allowNull: true,
   })
   banReason: string;

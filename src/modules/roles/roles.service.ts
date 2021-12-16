@@ -12,7 +12,7 @@ export class RolesService {
     return await this.roleRepository.create(dto);
   }
 
-  async findOne(value: string) {
+  async getByValueName(value: string) {
     return await this.roleRepository.findOne({ where: { value } });
   }
 }

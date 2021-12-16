@@ -22,7 +22,7 @@ export class RolesController {
 
   @Get(':value')
   async findOne(@Param('value') value: string) {
-    const role = await this.rolesService.findOne(value);
+    const role = await this.rolesService.getByValueName(value);
 
     if (!role) {
       throw new NotFoundException('Role not found');
