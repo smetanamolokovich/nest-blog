@@ -8,7 +8,7 @@ import { User } from './modules/user/user.model';
 import { RolesModule } from './modules/roles/roles.module';
 import { Role } from './modules/roles/roles.model';
 import { UserRoles } from './modules/roles/user-roles.model';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [

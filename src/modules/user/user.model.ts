@@ -5,6 +5,7 @@ import {
   DataType,
   Model,
   Table,
+  Unique,
 } from 'sequelize-typescript';
 import { Role } from '../roles/roles.model';
 import { UserRoles } from '../roles/user-roles.model';

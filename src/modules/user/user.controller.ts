@@ -8,17 +8,18 @@ import {
   NotFoundException,
   Put,
   UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './user.model';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { Roles } from 'src/auth/roles.decorator';
-import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/modules/auth/roles.decorator';
+import { RolesGuard } from 'src/modules/auth/roles.guard';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
+import { ValidationPipes } from '../../pipes/validation.pipe';
 
 @ApiTags('User')
 @Controller('api/users')
@@ -27,6 +28,8 @@ export class UserController {
 
   @ApiOperation({ summary: 'Create new user' })
   @ApiResponse({ status: 201, type: User })
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
