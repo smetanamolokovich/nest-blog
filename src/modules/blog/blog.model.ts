@@ -2,10 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Table, Model, Column, DataType } from 'sequelize-typescript';
 
 interface BlogCreationAttrs {
-  title: string;
-  content: string;
-  image: string;
-  summary: string;
+  readonly title: string;
+  readonly content: string;
+  readonly image: string;
+  readonly summary: string;
 }
 
 @Table({ tableName: 'blog' })
