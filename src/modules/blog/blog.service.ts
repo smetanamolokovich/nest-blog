@@ -1,15 +1,24 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { FilesService } from '../files/files.service';
 import { Blog } from './blog.model';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 
 @Injectable()
 export class BlogService {
-  constructor(@InjectModel(Blog) private blogRepository: typeof Blog) {}
+  constructor(
+    @InjectModel(Blog) private blogRepository: typeof Blog,
+    private filesService: FilesService,
+  ) {}
 
-  async create(dto: CreateBlogDto) {
-    const article = await this.blogRepository.create(dto);
+  async create(dto: CreateBlogDto, image: any) {
+    const fileName = await this.filesService.craeteFile(image);
+    const article = await this.blogRepository.create({
+      ...dto,
+      image: fileName,
+    });
+
     return article;
   }
 

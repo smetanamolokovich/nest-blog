@@ -1,11 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Table, Model, Column, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  DataType,
+  BelongsTo,
+  ForeignKey,
+} from 'sequelize-typescript';
+import { User } from '../user/user.model';
 
 interface BlogCreationAttrs {
   readonly title: string;
   readonly content: string;
   readonly image: string;
   readonly summary: string;
+  readonly userId: number;
 }
 
 @Table({ tableName: 'blog' })
@@ -54,9 +63,7 @@ export class Blog extends Model<Blog, BlogCreationAttrs> {
 
   @ApiProperty({ example: 'some img', description: 'Post image' })
   @Column({
-    type: DataType.BLOB({
-      length: 'long',
-    }),
+    type: DataType.STRING,
     allowNull: true,
     defaultValue: null,
   })
@@ -68,4 +75,11 @@ export class Blog extends Model<Blog, BlogCreationAttrs> {
     allowNull: false,
   })
   summary: string;
+
+  @ForeignKey(() => User)
+  @Column({ type: DataType.INTEGER })
+  userId: number;
+
+  @BelongsTo(() => User)
+  author: User;
 }

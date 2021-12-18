@@ -7,7 +7,10 @@ import {
   Delete,
   Put,
   NotFoundException,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Blog } from './blog.model';
 import { BlogService } from './blog.service';
@@ -22,8 +25,9 @@ export class BlogController {
   @ApiOperation({ summary: 'Create new post' })
   @ApiResponse({ status: 201, type: Blog })
   @Post()
-  async create(@Body() createBlogDto: CreateBlogDto) {
-    return await this.blogService.create(createBlogDto);
+  @UseInterceptors(FileInterceptor('image'))
+  async create(@Body() dto: CreateBlogDto, @UploadedFile() image) {
+    return await this.blogService.create(dto, image);
   }
 
   @ApiOperation({ summary: 'Get all posts' })
