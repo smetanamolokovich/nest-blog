@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: api
+    build:
+      context: .
+    env_file:
+      - development.env
+    environment:
+      POSTGRES_HOST: postgres
+      PORT: 5000
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 5000:5000
+    command: npm run start:dev
+    depends_on:
+      - postgres
+    restart: always
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    volumes:
+      - type: bind
+        source: .
+        target: /var/lib/posgresql/data
+    env_file:
+      - development.env
+    environment:
+      PG_DATA: /var/lib/posgresql/data
+    ports:
+      - 5436:5432
+    restart: always
+
+volumes:
+  pg-data:
