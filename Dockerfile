@@ -4,7 +4,10 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN apk update && apk add bash
+
+RUN npm i -g sequelize-cli
+RUN npm i
 
 COPY ./dist ./dist
 
