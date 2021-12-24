@@ -9,10 +9,11 @@ import { RolesModule } from '../roles/roles.module';
 import { AuthModule } from '../auth/auth.module';
 import { UserRoles } from '../roles/user-roles.model';
 import { Role } from '../roles/roles.model';
+import { SlugProvider } from './slug.provider';
 
 @Module({
   controllers: [BlogController],
-  providers: [BlogService],
+  providers: [BlogService, SlugProvider],
   imports: [
     SequelizeModule.forFeature([Blog, User, Role, UserRoles]),
     FilesModule,

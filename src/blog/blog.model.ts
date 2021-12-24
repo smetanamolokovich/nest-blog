@@ -14,6 +14,7 @@ interface BlogCreationAttrs {
   readonly content: string;
   readonly image: string;
   readonly summary: string;
+  readonly slug: string;
   readonly userId: number;
 }
 
@@ -30,9 +31,9 @@ export class Blog extends Model<Blog, BlogCreationAttrs> {
 
   @ApiProperty({ example: 'first-blog', description: 'Post slug' })
   @Column({
-    type: DataType.CHAR,
+    type: DataType.STRING,
     unique: true,
-    allowNull: true, // change to false, after implementation of slugs
+    allowNull: false,
   })
   slug: string;
 

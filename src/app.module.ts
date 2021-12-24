@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
-import { BlogModule } from './modules/blog/blog.module';
-import { Blog } from './modules/blog/blog.model';
-import { UserModule } from './modules/user/user.module';
-import { User } from './modules/user/user.model';
-import { RolesModule } from './modules/roles/roles.module';
-import { Role } from './modules/roles/roles.model';
-import { UserRoles } from './modules/roles/user-roles.model';
-import { AuthModule } from './modules/auth/auth.module';
-import { FilesModule } from './modules/files/files.module';
+import { BlogModule } from './blog/blog.module';
+import { Blog } from './blog/blog.model';
+import { UserModule } from './user/user.module';
+import { User } from './user/user.model';
+import { RolesModule } from './roles/roles.module';
+import { Role } from './roles/roles.model';
+import { UserRoles } from './roles/user-roles.model';
+import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'path';
 
