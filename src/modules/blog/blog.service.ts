@@ -12,14 +12,21 @@ export class BlogService {
     private filesService: FilesService,
   ) {}
 
-  async create(dto: CreateBlogDto, image: any) {
-    const fileName = await this.filesService.craeteFile(image);
-    const article = await this.blogRepository.create({
-      ...dto,
-      image: fileName,
-    });
+  async create(userId: number, dto: CreateBlogDto, image: any) {
+    if (userId) {
+      let fileName: string;
+      if (image) {
+        fileName = await this.filesService.craeteFile(image);
+      }
 
-    return article;
+      const article = await this.blogRepository.create({
+        ...dto,
+        image: fileName,
+        userId,
+      });
+
+      return article;
+    }
   }
 
   async findAll() {
@@ -32,13 +39,21 @@ export class BlogService {
     return article;
   }
 
-  async update(id: number, dto: UpdateBlogDto) {
+  async update(id: number, dto: UpdateBlogDto, image: any) {
+    let fileName: string;
+
+    if (image) {
+      fileName = await this.filesService.craeteFile(image);
+    }
+
     const article = await this.blogRepository.update(
       {
         ...dto,
+        image: fileName,
       },
       {
         where: { id },
+        returning: true,
       },
     );
 

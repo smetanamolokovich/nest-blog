@@ -9,9 +9,18 @@ import {
   NotFoundException,
   UploadedFile,
   UseInterceptors,
+  UseGuards,
+  UsePipes,
+  Req,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
+import { User } from '../user/user.model';
 import { Blog } from './blog.model';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
@@ -24,14 +33,31 @@ export class BlogController {
 
   @ApiOperation({ summary: 'Create new post' })
   @ApiResponse({ status: 201, type: Blog })
-  @Post()
+  @Roles('user')
+  @UseGuards(RolesGuard)
   @UseInterceptors(FileInterceptor('image'))
-  async create(@Body() dto: CreateBlogDto, @UploadedFile() image) {
-    return await this.blogService.create(dto, image);
+  @Post()
+  async create(
+    @Req() req: any,
+    @Body() dto: CreateBlogDto,
+    @UploadedFile() image?: any,
+  ) {
+    const userId = req.user.id;
+    const post = await this.blogService.create(userId, dto, image);
+    if (!post) {
+      throw new HttpException(
+        'Error occured while creating new post',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return post;
   }
 
   @ApiOperation({ summary: 'Get all posts' })
   @ApiResponse({ status: 200, type: [Blog] })
+  @Roles('user')
+  @UseGuards(RolesGuard)
   @Get()
   async findAll() {
     return await this.blogService.findAll();
@@ -39,6 +65,8 @@ export class BlogController {
 
   @ApiOperation({ summary: 'Get post by id' })
   @ApiResponse({ status: 200, type: Blog })
+  @Roles('user')
+  @UseGuards(RolesGuard)
   @Get(':id')
   async findOne(@Param('id') id: number) {
     const article = await this.blogService.findOne(id);
@@ -50,11 +78,19 @@ export class BlogController {
 
   @ApiOperation({ summary: 'Update post by id' })
   @ApiResponse({ status: 200, type: [Blog] })
+  @Roles('user')
+  @UseGuards(RolesGuard)
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateBlogDto: UpdateBlogDto) {
+  @UseInterceptors(FileInterceptor('image'))
+  async update(
+    @Param('id') id: number,
+    @Body() dto: UpdateBlogDto,
+    @UploadedFile() image?: any,
+  ) {
     const [numberOfAffectedRows, updatedPost] = await this.blogService.update(
       id,
-      updateBlogDto,
+      dto,
+      image,
     );
 
     if (numberOfAffectedRows === 0) {
@@ -66,6 +102,8 @@ export class BlogController {
 
   @ApiOperation({ summary: 'Delete post by id' })
   @ApiResponse({ status: 200 })
+  @Roles('user')
+  @UseGuards(RolesGuard)
   @Delete(':id')
   async remove(@Param('id') id: number) {
     const deleted = await this.blogService.remove(id);

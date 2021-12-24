@@ -15,9 +15,6 @@ export class UpdateBlogDto extends PartialType(CreateBlogDto) {
   @IsString({ message: 'must be string' })
   readonly content: string;
 
-  @ApiProperty({ example: 'some img', description: 'Post image' })
-  readonly image: string;
-
   @ApiProperty({ example: 'This is summary.', description: 'Post summary' })
   @IsString({ message: 'must be string' })
   readonly summary: string;

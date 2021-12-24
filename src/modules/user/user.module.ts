@@ -14,7 +14,7 @@ import { Blog } from '../blog/blog.model';
   providers: [UserService],
   imports: [
     SequelizeModule.forFeature([User, Role, UserRoles, Blog]),
-    RolesModule,
+    forwardRef(() => RolesModule),
     forwardRef(() => AuthModule),
   ],
   exports: [UserService],

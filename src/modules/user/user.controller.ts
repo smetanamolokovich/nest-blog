@@ -8,7 +8,6 @@ import {
   NotFoundException,
   Put,
   UseGuards,
-  UsePipes,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,7 +18,6 @@ import { Roles } from 'src/modules/auth/roles.decorator';
 import { RolesGuard } from 'src/modules/auth/roles.guard';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
-import { ValidationPipes } from '../../pipes/validation.pipe';
 
 @ApiTags('User')
 @Controller('api/users')
@@ -64,6 +62,8 @@ export class UserController {
 
   @ApiOperation({ summary: 'Get user by ID' })
   @ApiResponse({ status: 200, type: User })
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @Get(':id')
   async findOne(@Param('id') id: number) {
     const user = await this.userService.findOne(id);
@@ -76,6 +76,8 @@ export class UserController {
 
   @ApiOperation({ summary: 'Update user by ID' })
   @ApiResponse({ status: 200, type: [User] })
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @Put(':id')
   async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     const [numberOfAffectedRows, updatedUser] = await this.userService.update(
@@ -91,6 +93,8 @@ export class UserController {
 
   @ApiOperation({ summary: 'Delete user by ID' })
   @ApiResponse({ status: 200 })
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @Delete(':id')
   async remove(@Param('id') id: number) {
     const deleted = await this.userService.remove(id);

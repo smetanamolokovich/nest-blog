@@ -53,10 +53,18 @@ export class AuthService {
 
   private async validateUser(dto: CreateUserDto) {
     const user = await this.userService.getUsersByEmail(dto.email);
-    const isPasswordMatch = await bcrypt.compare(dto.password, user.password);
 
-    if (user && isPasswordMatch) {
-      return user;
+    if (user) {
+      const isPasswordMatch = await bcrypt.compare(dto.password, user.password);
+
+      if (isPasswordMatch) {
+        return user;
+      }
+    } else {
+      throw new HttpException(
+        'Error while logging in.',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     throw new UnauthorizedException({

@@ -20,7 +20,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipes());
 
   await app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
+    console.log(`Works! Running on port: ${port}`);
   });
 }
 bootstrap();

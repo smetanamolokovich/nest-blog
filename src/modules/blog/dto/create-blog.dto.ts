@@ -16,6 +16,4 @@ export class CreateBlogDto {
   @ApiProperty({ example: 'This is summary.', description: 'Post summary' })
   @IsString({ message: 'must be string' })
   readonly summary: string;
-
-  readonly userId: number;
 }
