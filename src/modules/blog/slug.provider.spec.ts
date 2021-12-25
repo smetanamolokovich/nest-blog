@@ -13,7 +13,7 @@ describe('SlugProvider', () => {
     slugProvider = new SlugProvider();
   });
 
-  it('generate slug', () => {
+  it('generates slug', () => {
     expect(slugProvider.genSlug('test test')).toEqual('test_test');
   });
 

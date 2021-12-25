@@ -16,11 +16,13 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { Blog } from './blog.model';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { PaginationParams } from './dto/pagination-params.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 
 @ApiTags('Blog')
@@ -56,8 +58,14 @@ export class BlogController {
   @Roles('user')
   @UseGuards(RolesGuard)
   @Get()
-  async findAll() {
-    return await this.blogService.findAll();
+  async findAll(@Req() req: Request<any, any, any, PaginationParams>) {
+    const queryParams: PaginationParams = {
+      offset: req.query.offset || 0,
+      limit: req.query.limit || 10,
+    };
+    const { rows, count } = await this.blogService.findAll(queryParams);
+
+    return { posts: rows, total: count };
   }
 
   @ApiOperation({ summary: 'Get post by id' })

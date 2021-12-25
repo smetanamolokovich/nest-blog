@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
 import { Category } from '../categories/categories.model';
 import { CategoriesService } from '../categories/categories.service';
 import { FilesService } from '../files/files.service';
 import { User } from '../user/user.model';
 import { Blog } from './blog.model';
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { PaginationParams } from './dto/pagination-params.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { SlugProvider } from './slug.provider';
 
@@ -39,8 +41,10 @@ export class BlogService {
     }
   }
 
-  async findAll() {
-    return await this.blogRepository.findAll({
+  async findAll(queryParams: PaginationParams) {
+    const { limit, offset } = queryParams;
+
+    return await this.blogRepository.findAndCountAll({
       include: [
         {
           model: User,
@@ -51,6 +55,8 @@ export class BlogService {
           attributes: ['name'],
         },
       ],
+      limit,
+      offset,
     });
   }
 
