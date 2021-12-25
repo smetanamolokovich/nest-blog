@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import {
   BelongsToMany,
   Column,
@@ -41,6 +42,7 @@ export class User extends Model<User, UserCreationAttrs> {
     type: DataType.STRING,
     allowNull: false,
   })
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @ApiProperty({ example: 'false', description: 'Is user banned' })

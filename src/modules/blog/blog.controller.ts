@@ -10,17 +10,14 @@ import {
   UploadedFile,
   UseInterceptors,
   UseGuards,
-  UsePipes,
   Req,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
-import { User } from '../user/user.model';
 import { Blog } from './blog.model';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';

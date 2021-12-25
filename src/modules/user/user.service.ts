@@ -25,7 +25,10 @@ export class UserService {
   }
 
   async findAll() {
-    return await this.userRepository.findAll({ include: { all: true } });
+    return await this.userRepository.findAll({
+      include: { all: true },
+      attributes: { exclude: ['password'] },
+    });
   }
 
   async findOne(id: number) {

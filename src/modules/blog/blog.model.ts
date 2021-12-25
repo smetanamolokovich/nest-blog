@@ -6,7 +6,10 @@ import {
   DataType,
   BelongsTo,
   ForeignKey,
+  BelongsToMany,
 } from 'sequelize-typescript';
+import { BlogCategories } from '../categories/blog-categories.model';
+import { Category } from '../categories/categories.model';
 import { User } from '../user/user.model';
 
 interface BlogCreationAttrs {
@@ -16,6 +19,7 @@ interface BlogCreationAttrs {
   readonly summary: string;
   readonly slug: string;
   readonly userId: number;
+  readonly categories: Category[];
 }
 
 @Table({ tableName: 'blog' })
@@ -29,7 +33,7 @@ export class Blog extends Model<Blog, BlogCreationAttrs> {
   })
   id: number;
 
-  @ApiProperty({ example: 'first-blog', description: 'Post slug' })
+  @ApiProperty({ example: 'first_blog', description: 'Post slug' })
   @Column({
     type: DataType.STRING,
     unique: true,
@@ -83,4 +87,7 @@ export class Blog extends Model<Blog, BlogCreationAttrs> {
 
   @BelongsTo(() => User)
   author: User;
+
+  @BelongsToMany(() => Category, () => BlogCategories)
+  categories: Category[];
 }

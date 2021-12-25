@@ -1,17 +1,20 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
-import { BlogModule } from './blog/blog.module';
-import { Blog } from './blog/blog.model';
-import { UserModule } from './user/user.module';
-import { User } from './user/user.model';
-import { RolesModule } from './roles/roles.module';
-import { Role } from './roles/roles.model';
-import { UserRoles } from './roles/user-roles.model';
-import { AuthModule } from './auth/auth.module';
-import { FilesModule } from './files/files.module';
+import { BlogModule } from './modules/blog/blog.module';
+import { Blog } from './modules/blog/blog.model';
+import { UserModule } from './modules/user/user.module';
+import { User } from './modules/user/user.model';
+import { RolesModule } from './modules/roles/roles.module';
+import { Role } from './modules/roles/roles.model';
+import { UserRoles } from './modules/roles/user-roles.model';
+import { AuthModule } from './modules/auth/auth.module';
+import { FilesModule } from './modules/files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { CategoriesModule } from './modules/categories/categories.module';
 import * as path from 'path';
+import { BlogCategories } from './modules/categories/blog-categories.model';
+import { Category } from './modules/categories/categories.model';
 
 @Module({
   imports: [
@@ -28,7 +31,7 @@ import * as path from 'path';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [Blog, User, Role, UserRoles],
+      models: [Blog, User, Role, UserRoles, BlogCategories, Category],
       autoLoadModels: true,
     }),
     BlogModule,
@@ -36,6 +39,7 @@ import * as path from 'path';
     RolesModule,
     AuthModule,
     FilesModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [],

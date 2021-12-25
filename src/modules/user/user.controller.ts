@@ -8,6 +8,9 @@ import {
   NotFoundException,
   Put,
   UseGuards,
+  ValidationPipe,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -29,7 +32,10 @@ export class UserController {
   @Roles('admin')
   @UseGuards(RolesGuard)
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
+  @UseInterceptors(ClassSerializerInterceptor)
+  async create(
+    @Body(new ValidationPipe({ transform: true })) createUserDto: CreateUserDto,
+  ) {
     return await this.userService.create(createUserDto);
   }
 
